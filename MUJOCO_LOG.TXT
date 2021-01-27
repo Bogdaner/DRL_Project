@@ -1,0 +1,12 @@
+Mon Jan 25 14:34:37 2021
+ERROR: Invalid text in activation key
+
+Mon Jan 25 14:51:45 2021
+ERROR: GLEW initalization error: Missing GL version
+
+Mon Jan 25 18:56:19 2021
+ERROR: GLEW initalization error: Missing GL version
+
+Tue Jan 26 19:03:06 2021
+ERROR: GLEW initalization error: Missing GL version
+

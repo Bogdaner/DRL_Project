@@ -3,6 +3,7 @@ import torch
 import gym
 
 import TD3
+import DDPG
 import ReplayBuffer
 
 # Runs policy for X episodes and returns average reward
@@ -19,11 +20,11 @@ def eval_policy(policy, env_name, seed, eval_episodes=10):
             state, reward, done, _ = eval_env.step(action)
             avg_reward += reward
 
-        avg_reward /= eval_episodes
-        print(20 * '-')
-        print(f"Evaluation over {eval_episodes} episodes\tAverage reward: {avg_reward:.3f}")
-        print(20 * '-')
-        return avg_reward
+    avg_reward /= eval_episodes
+    print(20 * '-')
+    print(f"Evaluation over {eval_episodes} episodes\tAverage reward: {avg_reward:.3f}")
+    print(20 * '-')
+    return avg_reward
 
 
 if __name__ == "__main__":
@@ -33,14 +34,14 @@ if __name__ == "__main__":
     # Consts
     seed = 0                    # Sets gym, torch, np seeds
     exploration_noise = 0.1     # probability to choose action randomly
-    timesteps = int(2e5)        # timesteps to run whole environment
+    timesteps = int(1e6)        # timesteps to run whole environment
     start_timesteps = 25e3      # initial timesteps - random policy is used
     batch_size = 256
-    eval_freq = 5000
+    eval_freq = 2500
 
     save_model = True
-    load_model = 'LunarLanderContinuous_Test'
-    file_name = load_model
+    load_model = ''
+    file_name = 'DDPG_LunarLanderContinuous-v2_Plot'
 
     # Set seeds
     env.seed(seed)
@@ -51,10 +52,13 @@ if __name__ == "__main__":
     action_dim = env.action_space.shape[0]
     max_action = float(env.action_space.high[0])
 
-    agent = TD3.TD3(state_dim, action_dim, max_action)
+    # Agent type choice
+    # agent = TD3.TD3(state_dim, action_dim, max_action)
+    agent = DDPG.DDPG(state_dim, action_dim, max_action)
+
     replay_buffer = ReplayBuffer.ReplayBuffer(state_dim, action_dim)
 
-    if load_model != "":
+    if load_model != '':
         agent.load(f"./models/{load_model}")
 
     # Check untrained agent
